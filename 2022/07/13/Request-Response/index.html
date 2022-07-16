@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="简介 Request 获取请求数据Response 设置响应数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Request&amp;Response">
+<meta property="og:url" content="https://krisxf.github.io/2022/07/13/Request-Response/index.html">
+<meta property="og:site_name" content="阁">
+<meta property="og:description" content="简介 Request 获取请求数据Response 设置响应数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://krisxf.github.io/2022/07/13/Request-Response/Request%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB.png">
+<meta property="article:published_time" content="2022-07-13T07:21:23.000Z">
+<meta property="article:modified_time" content="2022-07-13T12:20:45.567Z">
+<meta property="article:author" content="Kris">
+<meta property="article:tag" content="JAVA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://krisxf.github.io/2022/07/13/Request-Response/Request%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB.png">
+
+<link rel="canonical" href="https://krisxf.github.io/2022/07/13/Request-Response/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Request&Response | 阁</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阁</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2022/07/13/Request-Response/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Request&Response
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-13 15:21:23" itemprop="dateCreated datePublished" datetime="2022-07-13T15:21:23+08:00">2022-07-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Servlet/" itemprop="url" rel="index"><span itemprop="name">Servlet</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>Request 获取请求数据<br>Response 设置响应数据</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h1><h2 id="Request-继承体系"><a href="#Request-继承体系" class="headerlink" title="Request 继承体系"></a>Request 继承体系</h2><p><img src="/2022/07/13/Request-Response/Request%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB.png" alt="Request 继承体系"></p>
+<ul>
+<li>TomCat 需要解析请求数据 封装为request对象 并且创建request对象传递到service方法中<h2 id="Request-获取请求数据"><a href="#Request-获取请求数据" class="headerlink" title="Request 获取请求数据"></a>Request 获取请求数据</h2><h3 id="获取请求数据"><a href="#获取请求数据" class="headerlink" title="获取请求数据"></a>获取请求数据</h3></li>
+<li>请求数据分为3部分<ul>
+<li>请求行 GET&#x2F;request-demo&#x2F;reql?username &#x3D; zhangsan HTTP&#x2F;1.1<ul>
+<li>String getMethod() 获取请求方式  ： GET</li>
+<li>String getContextPath() 获取虚拟目录(目录访问路径) :&#x2F;request-demo</li>
+<li>StringBuffer getRequestURL() 获取URL ： <a target="_blank" rel="noopener" href="http://localhost:8080/request-demo/req1">http://localhost:8080/request-demo/req1</a></li>
+<li>String getRequestURL() 获取URI ： &#x2F;request-demo&#x2F;req1</li>
+<li>String getQueryString() 获取请求参数(GET方式) username&#x3D; zhangsan&amp;password &#x3D; 123</li>
+</ul>
+</li>
+<li>请求头 User-Agent:Mozilla&#x2F;5.0 Chrome&#x2F;91.0.4472.106<ul>
+<li>String getHeader(String name) 根据请求头名称 获取值</li>
+</ul>
+</li>
+<li>请求体 username &#x3D; kris&amp;password &#x3D; 111<ul>
+<li>ServletInputStream getInputSatream() 获取字节输入流</li>
+<li>BufferedReader getReader() 获取字符输入流</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="通用方式获取请求参数"><a href="#通用方式获取请求参数" class="headerlink" title="通用方式获取请求参数"></a>通用方式获取请求参数</h3><ul>
+<li>请求参数获取方式<ul>
+<li>GET 方式<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">String</span> <span class="function"><span class="title">getQueryString</span>()</span></span><br></pre></td></tr></table></figure></li>
+<li>POST 方式<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">BufferedReader</span> <span class="function"><span class="title">getReader</span>()</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>Request 通用方式获取请求参数<ul>
+<li>Map&lt;String,String[]&gt; getParameterMap(); 获取所有参数Map集合</li>
+<li>String[] getParameterValues(String name) 根据名称获取参数值(数组)</li>
+<li>String getParameter(String name) 根据名称获取参数值(单个值)</li>
+</ul>
+</li>
+</ul>
+<h3 id="请求参数中文乱码处理"><a href="#请求参数中文乱码处理" class="headerlink" title="请求参数中文乱码处理"></a>请求参数中文乱码处理</h3><ul>
+<li><p>请求参数如果存在中文数据，则会乱码</p>
+<ul>
+<li>POST： 设置输入流的编码<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+<li>GET  先编码 再解码<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="constructor">String(<span class="params">username</span>.<span class="params">getBytes</span>(<span class="string">&quot;ISO-8859-1&quot;</span>)</span>,<span class="string">&quot;UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>URL 编码<ul>
+<li>将字符串按照编码方式转为二进制</li>
+<li>每个字节转为2个16进制数并在前边加上%<h2 id="Request-请求转发"><a href="#Request-请求转发" class="headerlink" title="Request 请求转发"></a>Request 请求转发</h2><blockquote>
+<p>一种在服务器内部的资源跳转方式</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>实现方式</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req.getRequestDispatcher(<span class="string">&quot;资源B路径&quot;</span>).forward(req.resp)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>请求转发资源间共享数据 使用Requset 对象</p>
+<ul>
+<li>void setAttribute(String name,Object o) 存储数据到request域中</li>
+<li>Object getAttribute(String name) 根据key 获取值</li>
+<li>void removeAttribute(String name)根据key 删除该键值对</li>
+</ul>
+</li>
+<li><p>请求转发特点</p>
+<ul>
+<li>浏览器地址栏路径不发生变化</li>
+<li>只能转发到当前服务器的内部资源</li>
+<li>一次请求 可以在转发的资源间使用request共享数据</li>
+</ul>
+</li>
+</ul>
+<h1 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h1><h2 id="Response-设置响应数据功能介绍"><a href="#Response-设置响应数据功能介绍" class="headerlink" title="Response 设置响应数据功能介绍"></a>Response 设置响应数据功能介绍</h2><ul>
+<li><p>响应行 </p>
+  <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">HTTP</span>/<span class="number">1</span>.<span class="number">1</span> <span class="number">200</span> OK</span><br></pre></td></tr></table></figure>
+<ul>
+<li>void setStatus(int sc) 设置响应状态码</li>
+</ul>
+</li>
+<li><p>响应头</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-<span class="keyword">Type</span>:<span class="type">text</span>/html</span><br></pre></td></tr></table></figure>
+<ul>
+<li>void setHeader(String name,String value) 设置响应头键值对</li>
+</ul>
+</li>
+<li><p>响应体</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;html&gt;</span><span class="section">&lt;head&gt;</span><span class="section">&lt;/head&gt;</span><span class="section">&lt;body&gt;</span><span class="section">&lt;/body&gt;</span><span class="section">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>PrintWrite getWriter() 获取字符输出流</li>
+<li>ServletOutputStream getOutputStream() 获取字节输出流<h2 id="Response-完成重定向"><a href="#Response-完成重定向" class="headerlink" title="Response 完成重定向"></a>Response 完成重定向</h2><blockquote>
+<p>重定向(Redirect) 一种资源跳转方式</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>实现方式</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">resp.set<span class="constructor">Status(302)</span>;</span><br><span class="line">resp.set<span class="constructor">Header(<span class="string">&quot;location&quot;</span>,<span class="string">&quot;另一资源的路径&quot;</span>)</span>;</span><br><span class="line"><span class="comment">//简化版</span></span><br><span class="line">resp.send<span class="constructor">Redirect(<span class="string">&quot;另一资源的路径&quot;</span>)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>重定向特点</p>
+<ul>
+<li>浏览器地址栏发生变化</li>
+<li>可以重定向到任意位置的资源(服务器内部，外部均可)</li>
+<li>两次请求，不能在多个资源使用request共享数据<h2 id="Response-响应字符数据"><a href="#Response-响应字符数据" class="headerlink" title="Response 响应字符数据"></a>Response 响应字符数据</h2></li>
+</ul>
+</li>
+<li><p>使用</p>
+<ul>
+<li>通过Response对象获取字符输出流<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PrintWriter writer <span class="operator">=</span> resp.getWriter()<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+<li>写数据<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer.write(<span class="string">&quot;kris&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+<li>设置编码<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(<span class="string">&quot;text/html;charset = utf-8&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+<li>该流不需要关闭 随着响应结束 response 对象销毁 由服务器关闭<h2 id="Response-响应字节数据"><a href="#Response-响应字节数据" class="headerlink" title="Response 响应字节数据"></a>Response 响应字节数据</h2></li>
+</ul>
+</li>
+<li><p>使用</p>
+<ul>
+<li>通过Response对象获取字符输出流<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServletOutputStream outputStream <span class="operator">=</span> resp.getOutputStream()<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+<li>写数据<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outputStream.write(字节数据)<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>IOUtils工具类的使用</p>
+<ul>
+<li>导入坐标<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>使用<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IOUtils.<span class="keyword">copy</span>(输入流,输出流);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2022/07/13/Request-Response/" title="Request&amp;Response">https://krisxf.github.io/2022/07/13/Request-Response/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/12/Servlet/" rel="prev" title="Servlet">
+      <i class="fa fa-chevron-left"></i> Servlet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/07/15/Cookies-Session/" rel="next" title="Cookies&Session">
+      Cookies&Session <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Request"><span class="nav-number">2.</span> <span class="nav-text">Request</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">Request 继承体系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">Request 获取请求数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">获取请求数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E6%96%B9%E5%BC%8F%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.2.</span> <span class="nav-text">通用方式获取请求参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E5%A4%84%E7%90%86"><span class="nav-number">2.2.3.</span> <span class="nav-text">请求参数中文乱码处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-number">2.3.</span> <span class="nav-text">Request 请求转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Response"><span class="nav-number">3.</span> <span class="nav-text">Response</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-%E8%AE%BE%E7%BD%AE%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.</span> <span class="nav-text">Response 设置响应数据功能介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-%E5%AE%8C%E6%88%90%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">3.2.</span> <span class="nav-text">Response 完成重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-%E5%93%8D%E5%BA%94%E5%AD%97%E7%AC%A6%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text">Response 响应字符数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-%E5%93%8D%E5%BA%94%E5%AD%97%E8%8A%82%E6%95%B0%E6%8D%AE"><span class="nav-number">3.4.</span> <span class="nav-text">Response 响应字节数据</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kris"
+      src="/images/03.jpg">
+  <p class="site-author-name" itemprop="name">Kris</p>
+  <div class="site-description" itemprop="description">Find something useful for you.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/krisxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;krisxf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='32,179,75' opacity='0.7' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/sakura.js"></script>

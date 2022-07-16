@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="简介 Servlet 是JavaEE规范之一，就是一个接口 我们需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Servlet">
+<meta property="og:url" content="https://krisxf.github.io/2022/07/12/Servlet/index.html">
+<meta property="og:site_name" content="阁">
+<meta property="og:description" content="简介 Servlet 是JavaEE规范之一，就是一个接口 我们需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://krisxf.github.io/2022/07/12/Servlet/Servlet%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2022-07-12T09:06:23.000Z">
+<meta property="article:modified_time" content="2022-07-12T10:55:25.099Z">
+<meta property="article:author" content="Kris">
+<meta property="article:tag" content="JAVA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://krisxf.github.io/2022/07/12/Servlet/Servlet%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png">
+
+<link rel="canonical" href="https://krisxf.github.io/2022/07/12/Servlet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Servlet | 阁</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阁</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2022/07/12/Servlet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Servlet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-12 17:06:23" itemprop="dateCreated datePublished" datetime="2022-07-12T17:06:23+08:00">2022-07-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Servlet/" itemprop="url" rel="index"><span itemprop="name">Servlet</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>Servlet 是JavaEE规范之一，就是一个接口 我们需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><ul>
+<li>创建web项目 导入Servlet依赖坐标<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>创建 定义一个类 实现Servlet接口 并重写接口中的所有方法 并在service方法中输入一句话<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">ServletDemo</span> <span class="symbol">implements</span> <span class="symbol">Servlet</span></span><br></pre></td></tr></table></figure></li>
+<li>配置 在类上使用@WebServlet 注解 配置Servlet的访问路径<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@WebServlet(<span class="string">&quot;/demo1&quot;</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">ServletDemo</span> <span class="symbol">implements</span> <span class="symbol">Servlet</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注解中的loadOnStartip参数<ul>
+<li>若为负整数(默认-1) 第一次被访问时创建Servlet对象</li>
+<li>0或正整数 服务器启动时创建Servlet对象，数字越小优先级越高</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>访问 启动TomCat 浏览器输入URL访问该Servlet<h1 id="Servlet-执行流程"><a href="#Servlet-执行流程" class="headerlink" title="Servlet 执行流程"></a>Servlet 执行流程</h1></li>
+<li>当Servlet第一次被调用的时候会触发init函数，该函数会把servlet实例加载到内存。该函数只会被调用一次</li>
+<li>web服务器把接收到的http请求封装成一个Request对象，作为service函数的参数传递进去。</li>
+<li>service函数会被调用多次，每访问一次Servlet，它的service函数就会被调用一次</li>
+<li>返回的结果封装在response对象，web服务器先将response的信息拆解出来<br>形成http响应格式。然后将这个结果返回给浏览器。</li>
+<li>浏览器得到结果之后会自己能识别的格式进行解析<h1 id="Servlet-生命周期"><a href="#Servlet-生命周期" class="headerlink" title="Servlet 生命周期"></a>Servlet 生命周期</h1></li>
+<li>对象的生命周期指一个对象从被创建到销毁的整个过程</li>
+<li>Servlet 运行在Servlet容器(web服务器)中，其生命周期由容器来管理 分为4个阶段<ul>
+<li>加载和实例化 默认情况下 当Servlet第一次被访问时，由容器创建Servlet对象</li>
+<li>初始化 在Servlet实例化之后，容器将调用Servlet的init()方法初始化这个对象 完成一些如加载配置文件 创建连接等初始化的工作 该方法只调用一次</li>
+<li>请求处理 每次请求Servlet时，Servlet容器都会调用Servlet的service()方法对请求进行处理</li>
+<li>服务终止 当需要释放内存或者容器关闭时 容器就会调用Servlet实例的destroy()方法完成资源的释放，在destroy()方法调用之后 容器会释放这个Servlet实例，该实例随后会被Java的垃圾收集器所回收</li>
+</ul>
+</li>
+</ul>
+<h1 id="Servlet-体系结构"><a href="#Servlet-体系结构" class="headerlink" title="Servlet 体系结构"></a>Servlet 体系结构</h1><blockquote>
+<p>开发B&#x2F;S架构的web项目，都是针对HTTP协议 所以自定义的Servlet 会继承HttpServlet</p>
+</blockquote>
+<p><img src="/2022/07/12/Servlet/Servlet%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="Servlet体系结构"></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@WebServlet</span>(<span class="string">&quot;/demo2&quot;</span>)</span><br><span class="line">    public <span class="class"><span class="keyword">class</span> <span class="title">ServletDemo2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> void doGet(<span class="type">HttpServletRequest</span> req, <span class="type">HttpServletResponse</span> resp) <span class="keyword">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span> &#123;</span><br><span class="line">        <span class="type">System</span>.out.println(<span class="string">&quot;get...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> void doPost(<span class="type">HttpServletRequest</span> req, <span class="type">HttpServletResponse</span> resp) <span class="keyword">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span> &#123;</span><br><span class="line">        <span class="type">System</span>.out.println(<span class="string">&quot;post...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Servlet-urlPattern配置"><a href="#Servlet-urlPattern配置" class="headerlink" title="Servlet urlPattern配置"></a>Servlet urlPattern配置</h1><ul>
+<li>Servlet 要想被访问 必须配置其访问路径(urlPattern)<ul>
+<li>一个Servlet 可以配置多个urlPattern<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPattern = &#123;<span class="string">&quot;/demo1&quot;</span>,<span class="string">&quot;/demo2&quot;</span>&#125;)</span></span><br></pre></td></tr></table></figure></li>
+<li>urlPattern 配置规则<ul>
+<li>精确匹配  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">配置路径  <span class="variable">@WebServlet</span>(&quot;/user/select&quot;)</span><br><span class="line">访问路径 localhost:<span class="number">8080</span><span class="operator">/</span>web<span class="operator">-</span>demo<span class="operator">/</span><span class="keyword">user</span><span class="operator">/</span><span class="keyword">select</span></span><br></pre></td></tr></table></figure></li>
+<li>目录匹配  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">配置路径  @WebServlet(<span class="string">&quot;/user/*&quot;</span>)</span><br><span class="line">访问路径 localhost:<span class="number">8080</span><span class="regexp">/web-demo/u</span>ser/aaa</span><br><span class="line">         localhost:<span class="number">8080</span><span class="regexp">/web-demo/u</span>ser/bbb</span><br></pre></td></tr></table></figure></li>
+<li>扩展名匹配  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">配置路径  @WebServlet(<span class="string">&quot;*.do&quot;</span>)</span><br><span class="line">访问路径 localhost:<span class="number">8080</span><span class="regexp">/web-demo/u</span>ser/aaa.<span class="keyword">do</span></span><br><span class="line">         localhost:<span class="number">8080</span><span class="regexp">/web-demo/u</span>ser/bbb.<span class="keyword">do</span></span><br></pre></td></tr></table></figure></li>
+<li>任意匹配  <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">配置路径  <span class="variable">@WebServlet</span>(<span class="string">&quot;/&quot;</span>)</span><br><span class="line">          <span class="variable">@WebServlet</span>(<span class="string">&quot;/*&quot;</span>)</span><br><span class="line">访问路径 <span class="attribute">localhost</span>:<span class="number">8080</span>/web-demo/haha</span><br></pre></td></tr></table></figure></li>
+<li>优先级<br>  精确&gt;目录&gt;扩展名&gt;&#x2F;*&gt;&#x2F;<h1 id="XML-配置方式编写-Servlet"><a href="#XML-配置方式编写-Servlet" class="headerlink" title="XML 配置方式编写 Servlet"></a>XML 配置方式编写 Servlet</h1></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Servlet 从3.0版本后开始支持使用注解配置 3.0之前只支持XML配置文件的配置方式</li>
+<li>步骤<ul>
+<li>编写Servlet类</li>
+<li>在web.xml中配置Servelt<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;demo&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.kris.servletDemo&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;demo&lt;/servlet&gt;</span><br><span class="line">    &lt;url-pattern&gt;/demo&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2022/07/12/Servlet/" title="Servlet">https://krisxf.github.io/2022/07/12/Servlet/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/12/TomCat/" rel="prev" title="TomCat">
+      <i class="fa fa-chevron-left"></i> TomCat
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/07/13/Request-Response/" rel="next" title="Request&Response">
+      Request&Response <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">快速入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Servlet-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">Servlet 执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Servlet-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">4.</span> <span class="nav-text">Servlet 生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Servlet-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">Servlet 体系结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Servlet-urlPattern%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">Servlet urlPattern配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XML-%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F%E7%BC%96%E5%86%99-Servlet"><span class="nav-number">7.</span> <span class="nav-text">XML 配置方式编写 Servlet</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kris"
+      src="/images/03.jpg">
+  <p class="site-author-name" itemprop="name">Kris</p>
+  <div class="site-description" itemprop="description">Find something useful for you.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/krisxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;krisxf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='32,179,75' opacity='0.7' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/sakura.js"></script>

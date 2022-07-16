@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="简介 JavaScript 是一门跨平台，面向对象的脚本语言，来控制网页行为的，它能使网页可交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript">
+<meta property="og:url" content="https://krisxf.github.io/2022/07/11/JS-1/index.html">
+<meta property="og:site_name" content="阁">
+<meta property="og:description" content="简介 JavaScript 是一门跨平台，面向对象的脚本语言，来控制网页行为的，它能使网页可交互">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-11T02:08:59.000Z">
+<meta property="article:modified_time" content="2022-07-11T12:57:09.500Z">
+<meta property="article:author" content="Kris">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://krisxf.github.io/2022/07/11/JS-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript | 阁</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阁</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2022/07/11/JS-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-11 10:08:59" itemprop="dateCreated datePublished" datetime="2022-07-11T10:08:59+08:00">2022-07-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>JavaScript 是一门跨平台，面向对象的脚本语言，来控制网页行为的，它能使网页可交互</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="JS-引入方式"><a href="#JS-引入方式" class="headerlink" title="JS 引入方式"></a>JS 引入方式</h1><ul>
+<li>内部脚本 将JS代码定义在HTML页面中<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">  JS代码</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在HTML文档中可以在任意地方，放置任意数量的&lt;script&gt;</li>
+<li>一般把脚本置于&lt;body&gt;元素的底部，可以改善显示速度，因为脚本执行会拖慢显示</li>
+</ul>
+</li>
+<li>外部脚本 将JS代码定义在外部JS文件中，然后引入到HTML页面中<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">script</span> src = <span class="string">&quot;xxx.js&quot;</span>&gt;&lt;\<span class="keyword">script</span>&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>外部脚本不能包含&lt;script&gt;标签</li>
+<li>&lt;script&gt; 标签不能自闭合<h1 id="JS-基础语法"><a href="#JS-基础语法" class="headerlink" title="JS 基础语法"></a>JS 基础语法</h1><h2 id="书写语法"><a href="#书写语法" class="headerlink" title="书写语法"></a>书写语法</h2></li>
+</ul>
+</li>
+<li>区分大小写 与Java一样 变量名 函数名 以及其他一切东西都是区分大小写的</li>
+<li>每行结尾的分号可有可无</li>
+<li>注释<ul>
+<li>单行  &#x2F;&#x2F;</li>
+<li>多行  &#x2F;**&#x2F;</li>
+</ul>
+</li>
+<li>大括号表示代码块<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;</span></span><br><span class="line"><span class="template-variable">  代码</span></span><br><span class="line"><span class="template-variable">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="输出语句"><a href="#输出语句" class="headerlink" title="输出语句"></a>输出语句</h2></li>
+<li>使用 window.alert()写入警告框</li>
+<li>使用document.write()写入HTML输出</li>
+<li>使用console.log()写入浏览器控制台<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2></li>
+<li>JS 中用var关键字来声明变量 相当于全局变量 并且可以重复定义</li>
+<li>JS是一门弱类型语言，变量可以存放不同类型的值<ul>
+<li>组成字符可以是任何字母 数字 下划线 或者美元符号($)</li>
+<li>数字不能开头</li>
+<li>建议使用驼峰命名</li>
+</ul>
+</li>
+<li>ECMAScript 6 新增let关键字来定义变量，用法类似var 但是所声明的变量只在let关键字所在的代码块内有效，且不允许重复声明</li>
+<li>ECMAScript 6 新增了const 关键字 用来声明一个只读的常量，一旦声明，常量的值就不能改变<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2></li>
+<li>原始类型<ul>
+<li>number 数字(整数 小数 NaN(Not a Number))</li>
+<li>string 字符 字符串 单双引皆可</li>
+<li>boolean 布尔 </li>
+<li>null 对象为空</li>
+<li>undefined 当声明的变量未初始化时 该变量的默认值时undefined</li>
+</ul>
+</li>
+</ul>
+<p><strong>使用typeof运算符可以获取数据类型</strong></p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><ul>
+<li>&#x3D;&#x3D; 会先判断数据类型 然后进行转换，在比较值，如 整数20会&#x3D;&#x3D; 字符串20</li>
+<li>&#x3D;&#x3D;&#x3D; 不会进行类型转换，类型不一样返回false</li>
+<li>类型转换<ul>
+<li>字符串的字面值转成整数，如果字符串字母值时字符，会转换成NaN，布尔类型 true 1 false 0</li>
+<li>0或者NaN会转成false 其他则为 true</li>
+<li>空字符串转成false 其他为true</li>
+<li>null 和 undefined都转为false<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2></li>
+</ul>
+</li>
+<li>JS 函数通过function关键词进行定义 语法为<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">定义方式一</span><br><span class="line"><span class="keyword">function</span> 函数名(<span class="params">参数<span class="number">1</span>，参数<span class="number">2</span>，...</span>)&#123;</span><br><span class="line">  函数体</span><br><span class="line">&#125;</span><br><span class="line">定义方式二</span><br><span class="line"><span class="keyword">var</span> 函数名 = <span class="keyword">function</span>(<span class="params">参数列表</span>)&#123;</span><br><span class="line">  函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>形参不需要类型 因为JS时弱类型语言</li>
+<li>返回值也不需要定义类型 可以在函数内部直接使用return返回即可</li>
+<li>JS 中，函数调用可以传递任意个数参数<h1 id="JS-常用对象"><a href="#JS-常用对象" class="headerlink" title="JS 常用对象"></a>JS 常用对象</h1><h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2></li>
+<li>定义<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 变量名 = <span class="keyword">new</span> <span class="built_in">Array</span>（元素列表）;<span class="comment">//方式 一</span></span><br><span class="line"><span class="keyword">var</span> 变量名 = [元素列表];<span class="comment">//方式二</span></span><br></pre></td></tr></table></figure></li>
+<li>访问<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr[索引] <span class="operator">=</span> 值</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>JS类似于Java集合 长度和类型都可变</strong></p>
+<ul>
+<li>push()  添加元素</li>
+<li>splice() 删除<ul>
+<li>参数一 从哪开始山</li>
+<li>参数二 删几个</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/jsref_obj_array.asp">JS Array</a></p>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><ul>
+<li>定义<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 变量名 = <span class="keyword">new</span> <span class="built_in">String</span>(s);<span class="comment">//方式一</span></span><br><span class="line"><span class="keyword">var</span> 变量名 = s；<span class="comment">//方式二</span></span><br></pre></td></tr></table></figure></li>
+<li>属性<ul>
+<li>length  字符串长度</li>
+<li>…</li>
+</ul>
+</li>
+<li>方法<ul>
+<li>charAt()  返回指定位置的字符</li>
+<li>indexOf()   检索字符串</li>
+<li>trim() 去除首位的空格</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/jsref_obj_string.asp">JS String</a></p>
+<h2 id="自定义对象"><a href="#自定义对象" class="headerlink" title="自定义对象"></a>自定义对象</h2><ul>
+<li>格式<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 对象名称 <span class="operator">=</span> &#123;</span><br><span class="line">  属性名称<span class="number">1</span>:属性值<span class="number">1</span>，</span><br><span class="line">  属性名称<span class="number">2</span>:属性值<span class="number">2</span>，</span><br><span class="line">  <span class="operator">...</span></span><br><span class="line">  函数名称:<span class="title function_">function</span>(形参列表)&#123;&#125;</span><br><span class="line">  <span class="operator">...</span></span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure>
+<h1 id="BOM"><a href="#BOM" class="headerlink" title="BOM"></a>BOM</h1></li>
+<li>Brower Object Model 浏览器对象模型</li>
+<li>JavaScript 将浏览器的各个组成部分封装为对象</li>
+</ul>
+<h2 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h2><ul>
+<li><p>Window 浏览器窗口对象</p>
+</li>
+<li><p>获取 直接使用window 其中window. 可以省略</p>
+</li>
+<li><p>属性 获取其他BOM对象</p>
+<ul>
+<li>history  对History 对象的只读引用</li>
+<li>Navigator  对<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/obj_navigator.asp">Navigator</a>对象的只读引用</li>
+<li>Screen  对<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/obj_screen.asp">Screen</a>对象的只读引用</li>
+<li>location 用于窗口或框架的Location对象</li>
+</ul>
+</li>
+<li><p>方法</p>
+<ul>
+<li>alert() 显示带有一段信息和一个确认按钮的警告框</li>
+<li>confirm() 显示带有一段信息以及确认按钮和取消按钮的对话框 <ul>
+<li>返回flag 确认为true 取消 false</li>
+</ul>
+</li>
+<li>setInterval() 按照指定的周期(以毫秒计)来调用函数或计算表达式 <ul>
+<li>参数一 function</li>
+<li>参数二 毫秒值</li>
+</ul>
+</li>
+<li>setTimeout() 在指定的毫秒数后调用函数或者计算表达式<ul>
+<li>参数一 function</li>
+<li>参数二 毫秒值<h2 id="History-历史记录对象"><a href="#History-历史记录对象" class="headerlink" title="History 历史记录对象"></a>History 历史记录对象</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>History 历史记录</p>
+</li>
+<li><p>获取 使用window.history获取 </p>
+</li>
+<li><p>方法</p>
+<ul>
+<li>back()  加载history列表中的前一个URL</li>
+<li>forward()  加载history列表中的下一个URL <h2 id="Location-对象"><a href="#Location-对象" class="headerlink" title="Location 对象"></a>Location 对象</h2></li>
+</ul>
+</li>
+<li><p>Location 地址栏对象</p>
+</li>
+<li><p>获取 使用window.location获取</p>
+</li>
+<li><p>属性</p>
+<ul>
+<li>href  设置或返回完整的URL<h1 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h1></li>
+</ul>
+</li>
+<li><p>Document Object Model 文档对象模型</p>
+</li>
+<li><p>将标记语言的各个组成部分封装为对象</p>
+<ul>
+<li>Document 整个文档对象</li>
+<li>Element  元素对象</li>
+<li>Attribute   属性对象</li>
+<li>Text   文本对象</li>
+<li>Comment   注释对象</li>
+</ul>
+</li>
+<li><p>JS 通过 DOM 能对HTML进行操作</p>
+<ul>
+<li>改变HTML元素的内容</li>
+<li>改变HTML元素的样式</li>
+<li>对HTML DOM 事件做出反应</li>
+<li>添加和删除HTML元素<h2 id="获取Element对象"><a href="#获取Element对象" class="headerlink" title="获取Element对象"></a>获取Element对象</h2></li>
+</ul>
+</li>
+<li><p>获取 使用Document 对象的方法来获取</p>
+<ul>
+<li>getElementById 根据id值获取 返回一个Element对象</li>
+<li>getElementByName  根据name属性值获取 返回Element对象数组</li>
+<li>getElementByTagName 根据标签名获取 返回Element对象数组</li>
+<li>getElementByClassName 根据class属性值获取 返回Element对象数组</li>
+</ul>
+</li>
+</ul>
+<h1 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h1><ul>
+<li><p>事件 HTML事件是发生在HTML元素上的“事情” 例如</p>
+<ul>
+<li>按钮被点击</li>
+<li>鼠标移动到元素上</li>
+</ul>
+</li>
+<li><p>事件监听 JS可以在事件被侦测到时执行代码</p>
+</li>
+</ul>
+<h2 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h2><ul>
+<li>方式一 通过HTML标签中的事件属性进行绑定<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="built_in">input</span> <span class="built_in">type</span>=<span class="string">&quot;button&quot;</span> onclick = <span class="string">&#x27;on()&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span><span class="params">()</span></span>&#123;</span><br><span class="line">  alert(<span class="string">&quot;点击&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>方式二 通过DOM元素属性绑定<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type<span class="operator">=</span><span class="string">&quot;button&quot;</span> id <span class="operator">=</span> <span class="string">&quot;btn&quot;</span>&gt;</span><br><span class="line">document.getElementById(<span class="string">&quot;btn&quot;</span>).onclick <span class="operator">=</span> function()&#123;</span><br><span class="line">  alert(<span class="string">&quot;点击&quot;</span>)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="常用事件"><a href="#常用事件" class="headerlink" title="常用事件"></a>常用事件</h2><table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>onclick</td>
+<td>鼠标点击事件</td>
+</tr>
+<tr>
+<td>onblur</td>
+<td>元素失去焦点</td>
+</tr>
+<tr>
+<td>onfocus</td>
+<td>元素获得焦点</td>
+</tr>
+<tr>
+<td>onload</td>
+<td>某个页面或图像被完成加载</td>
+</tr>
+<tr>
+<td>onsubmit</td>
+<td>当表单提交时触发该事件</td>
+</tr>
+<tr>
+<td>onkeydown</td>
+<td>某个键盘的键被按下</td>
+</tr>
+<tr>
+<td>onmouseover</td>
+<td>鼠标被移到某元素上</td>
+</tr>
+<tr>
+<td>onmouseout</td>
+<td>鼠标从某元素移开</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/jsref/dom_obj_event.asp">DOM 事件</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2022/07/11/JS-1/" title="JavaScript">https://krisxf.github.io/2022/07/11/JS-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/11/CSS/" rel="prev" title="CSS">
+      <i class="fa fa-chevron-left"></i> CSS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/07/12/TomCat/" rel="next" title="TomCat">
+      TomCat <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JS-%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">JS 引入方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JS-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">JS 基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%E8%AF%AD%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">书写语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.2.</span> <span class="nav-text">输出语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">3.5.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">3.6.</span> <span class="nav-text">函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JS-%E5%B8%B8%E7%94%A8%E5%AF%B9%E8%B1%A1"><span class="nav-number">4.</span> <span class="nav-text">JS 常用对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Array"><span class="nav-number">4.1.</span> <span class="nav-text">Array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number">4.2.</span> <span class="nav-text">String</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1"><span class="nav-number">4.3.</span> <span class="nav-text">自定义对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BOM"><span class="nav-number">5.</span> <span class="nav-text">BOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Window"><span class="nav-number">5.1.</span> <span class="nav-text">Window</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#History-%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.2.</span> <span class="nav-text">History 历史记录对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Location-%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.3.</span> <span class="nav-text">Location 对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM"><span class="nav-number">6.</span> <span class="nav-text">DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Element%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.1.</span> <span class="nav-text">获取Element对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC"><span class="nav-number">7.</span> <span class="nav-text">事件监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">7.1.</span> <span class="nav-text">事件绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%8B%E4%BB%B6"><span class="nav-number">7.2.</span> <span class="nav-text">常用事件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kris"
+      src="/images/03.jpg">
+  <p class="site-author-name" itemprop="name">Kris</p>
+  <div class="site-description" itemprop="description">Find something useful for you.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/krisxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;krisxf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='32,179,75' opacity='0.7' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/sakura.js"></script>
