@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Filter&amp;Listener</title>
+      <link href="/2022/07/16/Filter/"/>
+      <url>/2022/07/16/Filter/</url>
+      
+        <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Filter表示过滤器 可以把对资源的请求拦截下来 实现一些特殊的功能 如 权限控制 统一编码处理 敏感字符处理等<br>Listener 表示监听器可以监听就是在appliction session request 三个对象创建 销毁 或往其中添加修改删除属性时自动执行代码的功能组件</p><span id="more"></span><h1 id="Filter-快速入门"><a href="#Filter-快速入门" class="headerlink" title="Filter 快速入门"></a>Filter 快速入门</h1><ul><li>定义类 实现Filter 接口 并重写其所有方法<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">public</span> <span class="selector-tag">class</span> <span class="selector-tag">FileterDemo</span> <span class="selector-tag">implements</span> <span class="selector-tag">Filter</span> &#123;</span><br><span class="line">  <span class="variable">@Override</span></span><br><span class="line">  public void init(FilterConfig filterConfig) throws ServletException &#123;</span><br><span class="line">      </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="variable">@Override</span></span><br><span class="line">  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="variable">@Override</span></span><br><span class="line">  public void destroy() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li><li>配置Filter拦截资源路径 在类上定义@WebFilter 注解<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebFilter(<span class="string">&quot;/*&quot;</span>)</span></span><br></pre></td></tr></table></figure></li><li>在doFilter方法中编写代码 并放行<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    @Override</span><br><span class="line">public void <span class="keyword">do</span><span class="constructor">Filter(ServletRequest <span class="params">servletRequest</span>, ServletResponse <span class="params">servletResponse</span>, FilterChain <span class="params">filterChain</span>)</span> throws IOException, ServletException &#123;</span><br><span class="line">    <span class="comment">// 放行</span></span><br><span class="line">    filterChain.<span class="keyword">do</span><span class="constructor">Filter(<span class="params">servletRequest</span>,<span class="params">servletResponse</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="Filter-执行流程"><a href="#Filter-执行流程" class="headerlink" title="Filter 执行流程"></a>Filter 执行流程</h1></li><li>执行放行前逻辑</li><li>放行</li><li>访问资源</li><li>执行放行后逻辑<h1 id="Filter-使用细节"><a href="#Filter-使用细节" class="headerlink" title="Filter 使用细节"></a>Filter 使用细节</h1><h2 id="Filter-拦截路径配置"><a href="#Filter-拦截路径配置" class="headerlink" title="Filter 拦截路径配置"></a>Filter 拦截路径配置</h2></li><li>Filter 可以根据需求 配置不同的拦截资源路径<ul><li>拦截具体的资源 &#x2F;index.jsp 只有访问index.jsp时才会被拦截</li><li>目录拦截 &#x2F;user&#x2F;* 访问&#x2F;user 下的所有资源都会被拦截</li><li>后缀名拦截 *.jsp 访问后缀名为jsp的资源 都会被拦截</li><li>拦截所有 &#x2F;* 访问所有资源 都会被拦截</li></ul></li></ul><h2 id="过滤器链"><a href="#过滤器链" class="headerlink" title="过滤器链"></a>过滤器链</h2><blockquote><p>一个Web应用 可以配置多个过滤器 这多个过滤器称为过滤器链</p></blockquote><ul><li>过滤器的执行顺序由字符串的排序决定</li></ul><h1 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h1><ul><li><p>Listener分类<br> <img src="/2022/07/16/Filter/Listener%E5%88%86%E7%B1%BB.png" alt="Listener分类"></p></li><li><p>使用</p><ul><li>定义类 实现对应的接口</li><li>在类上添加@WebListener是注解</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Filter </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cookies&amp;Session</title>
       <link href="/2022/07/15/Cookies-Session/"/>
       <url>/2022/07/15/Cookies-Session/</url>
