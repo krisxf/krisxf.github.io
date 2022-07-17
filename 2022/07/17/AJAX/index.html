@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="简介AJAX(Asynchronous JavaScript And XML) : 异步的JavaScript和XML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AJAX">
+<meta property="og:url" content="https://krisxf.github.io/2022/07/17/AJAX/index.html">
+<meta property="og:site_name" content="阁">
+<meta property="og:description" content="简介AJAX(Asynchronous JavaScript And XML) : 异步的JavaScript和XML">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://krisxf.github.io/2022/07/17/AJAX/Axios%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%88%AB%E5%90%8D.png">
+<meta property="article:published_time" content="2022-07-17T01:57:55.000Z">
+<meta property="article:modified_time" content="2022-07-17T04:19:24.678Z">
+<meta property="article:author" content="Kris">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://krisxf.github.io/2022/07/17/AJAX/Axios%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%88%AB%E5%90%8D.png">
+
+<link rel="canonical" href="https://krisxf.github.io/2022/07/17/AJAX/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>AJAX | 阁</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阁</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">25</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2022/07/17/AJAX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AJAX
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-17 09:57:55" itemprop="dateCreated datePublished" datetime="2022-07-17T09:57:55+08:00">2022-07-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AJAX/" itemprop="url" rel="index"><span itemprop="name">AJAX</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>AJAX(Asynchronous JavaScript And XML) : 异步的JavaScript和XML</p>
+<span id="more"></span>
+<ul>
+<li>AJAX 作用<ul>
+<li>与服务器进行数据交换 通过AJAX 可以给服务器发送请求 并获取服务器响应的数据 </li>
+<li>异步交互 可以在不重新加载整个页面的情况下 与服务器交换数据并更新部分网页的技术</li>
+</ul>
+</li>
+</ul>
+<h1 id="AJAX-快速入门"><a href="#AJAX-快速入门" class="headerlink" title="AJAX 快速入门"></a>AJAX 快速入门</h1><ul>
+<li>编写AjaxServlet 并使用response输出字符串</li>
+<li>创建XMLHttpRequest 对象 用于和服务器交换数据<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xmlhttp;</span><br><span class="line"><span class="keyword">if</span>(window.XMLHttpRequest)&#123;</span><br><span class="line">  xmlhttp = <span class="keyword">new</span> <span class="type">XMLHttpRequest</span>();</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  xml = <span class="keyword">new</span> <span class="type">ActiveObject</span>(<span class="string">&quot;Microsoft.XMLHTTP&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>向服务器发送请求<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xmlhttp.open(<span class="string">&quot;<span class="keyword">GET</span>&quot;</span>,<span class="string">&quot;url&quot;</span>);</span><br><span class="line">xmlhttp.send();</span><br></pre></td></tr></table></figure></li>
+<li>获取服务器响应数据<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xmlhttp.onreadystatechange = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(xmlhttp.readyState == <span class="number">4</span> &amp;&amp; xmlhttp.<span class="keyword">status</span> == <span class="number">200</span>)&#123;</span><br><span class="line">      elert(xmlhttp.responseText);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Axios-异步框架"><a href="#Axios-异步框架" class="headerlink" title="Axios 异步框架"></a>Axios 异步框架</h1><blockquote>
+<p>Axios 对原生的AJAX进行封装 简化书写</p>
+</blockquote>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.axios-http.cn/">官网</a></li>
+</ul>
+<h2 id="Axios-快速入门"><a href="#Axios-快速入门" class="headerlink" title="Axios 快速入门"></a>Axios 快速入门</h2><ul>
+<li>引入 axios 的  js文件<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span> = <span class="string">&quot;js/axios-0.18.0.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>使用axios发送请求 并获取响应结果<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">axios</span>(&#123;</span><br><span class="line">  method:&quot;get&quot;,</span><br><span class="line">  url:&quot;...&quot;</span><br><span class="line">&#125;)<span class="selector-class">.then</span>(function(resp)&#123;</span><br><span class="line">  <span class="built_in">alert</span>(resp.data);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> axios(<span class="punctuation">&#123;</span></span><br><span class="line"><span class="symbol">  method:</span><span class="string">&quot;post&quot;</span>,</span><br><span class="line"><span class="symbol">  url:</span><span class="string">&quot;...&quot;</span>,</span><br><span class="line"><span class="symbol">  data:</span><span class="string">&quot;username = zhangsan&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span>).then(function(resp)<span class="punctuation">&#123;</span></span><br><span class="line">  alert(resp.data)<span class="punctuation">;</span></span><br><span class="line"><span class="punctuation">&#125;</span>)<span class="punctuation">;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Axios-请求方式别名"><a href="#Axios-请求方式别名" class="headerlink" title="Axios 请求方式别名"></a>Axios 请求方式别名</h2><img src="/2022/07/17/AJAX/Axios%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%88%AB%E5%90%8D.png" alt="Axios请求方式别名"></li>
+<li>发送get请求<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">axios.get</span>(<span class="string">&quot;url&quot;</span>)</span><br><span class="line">  .then(<span class="function"><span class="title">function</span>(<span class="variable">resp</span>)&#123;</span></span><br><span class="line"><span class="function">      <span class="title">alert</span>(<span class="variable">resp.data</span>);</span></span><br><span class="line"><span class="function">  &#125;)</span></span><br></pre></td></tr></table></figure></li>
+<li>发送post请求<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">axios</span>.<span class="property">post</span>(<span class="string">&quot;url&quot;</span>,<span class="string">&quot;参数&quot;</span>)</span><br><span class="line">  .<span class="property">then</span>(<span class="title function_">function</span>(<span class="params">resp</span>)&#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="variable">resp</span>.<span class="property">data</span>);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h1><blockquote>
+<p>JavaScript Object Notation JavaScript 对象表示法 其语法简单 层次鲜明 多用于作为数据载体 在网络中进行数据传输</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="JSON-基础语法"><a href="#JSON-基础语法" class="headerlink" title="JSON 基础语法"></a>JSON 基础语法</h2><ul>
+<li><p>定义</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var 变量名 = &#123;</span><br><span class="line">  <span class="string">&quot;key1&quot;</span> : <span class="type">value1</span>,</span><br><span class="line">  <span class="string">&quot;key2&quot;</span> : <span class="type">value2</span>,</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>value的数据类型<ul>
+<li>数字(整数或者浮点数)</li>
+<li>字符串(在双引号中)</li>
+<li>逻辑值(true or false)</li>
+<li>数组(在方括号中)</li>
+<li>对象(在花括号中) </li>
+<li>null</li>
+</ul>
+</li>
+<li>实例  <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">var</span> json = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">    <span class="string">&quot;age&quot;</span>:<span class="number">23</span>,</span><br><span class="line">    <span class="string">&quot;addr&quot;</span>:<span class="selector-attr">[<span class="string">&quot;北京&quot;</span>,<span class="string">&quot;上海&quot;</span>]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>获取数据</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">变量名.<span class="built_in">key</span></span><br><span class="line"><span class="comment">//示例</span></span><br><span class="line">json.<span class="built_in">key</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="JSON-数据和Java对象转换"><a href="#JSON-数据和Java对象转换" class="headerlink" title="JSON 数据和Java对象转换"></a>JSON 数据和Java对象转换</h2><ul>
+<li>Fastjson是阿里巴巴提供的一个Java语言编写的高性能功能完善的JSON库 是目前Java 语言中最快的JSON库 可以实现Java对象和JSON字符串的相互转换</li>
+<li>使用<ul>
+<li>导入坐标<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependency&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.62<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>Java对象转JSON<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String jsonStr = <span class="module-access"><span class="module"><span class="identifier">JSON</span>.</span></span><span class="keyword">to</span><span class="constructor">JSONString(<span class="params">obj</span>)</span>;</span><br></pre></td></tr></table></figure></li>
+<li>JSON 字符串转Java对象<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">User</span> <span class="keyword">user</span> = <span class="type">JSON</span>.parseObject(jsonStr,<span class="keyword">User</span>,<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2022/07/17/AJAX/" title="AJAX">https://krisxf.github.io/2022/07/17/AJAX/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/16/Filter/" rel="prev" title="Filter&Listener">
+      <i class="fa fa-chevron-left"></i> Filter&Listener
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AJAX-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">AJAX 快速入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Axios-%E5%BC%82%E6%AD%A5%E6%A1%86%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">Axios 异步框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Axios-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Axios 快速入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Axios-%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%88%AB%E5%90%8D"><span class="nav-number">3.2.</span> <span class="nav-text">Axios 请求方式别名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSON"><span class="nav-number">4.</span> <span class="nav-text">JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">JSON 基础语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-%E6%95%B0%E6%8D%AE%E5%92%8CJava%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2"><span class="nav-number">4.2.</span> <span class="nav-text">JSON 数据和Java对象转换</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kris"
+      src="/images/03.jpg">
+  <p class="site-author-name" itemprop="name">Kris</p>
+  <div class="site-description" itemprop="description">Find something useful for you.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/krisxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;krisxf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='32,179,75' opacity='0.7' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/sakura.js"></script>
