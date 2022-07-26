@@ -20,17 +20,22 @@
     var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
   </script>
 
-  <meta name="description" content="Find something useful for you.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阁">
-<meta property="og:url" content="https://krisxf.github.io/archives/2022/page/3/index.html">
+  <meta name="description" content="简介一套基于Vue 的网站组件库 用于快速构建网页 官网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Element">
+<meta property="og:url" content="https://krisxf.github.io/2022/07/19/Element/index.html">
 <meta property="og:site_name" content="阁">
-<meta property="og:description" content="Find something useful for you.">
+<meta property="og:description" content="简介一套基于Vue 的网站组件库 用于快速构建网页 官网">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://krisxf.github.io/2022/07/19/Element/Layout%E5%B8%83%E5%B1%80.png">
+<meta property="og:image" content="https://krisxf.github.io/2022/07/19/Element/Container%E5%B8%83%E5%B1%80.png">
+<meta property="article:published_time" content="2022-07-19T02:15:13.000Z">
+<meta property="article:modified_time" content="2022-07-19T02:38:51.965Z">
 <meta property="article:author" content="Kris">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://krisxf.github.io/2022/07/19/Element/Layout%E5%B8%83%E5%B1%80.png">
 
-<link rel="canonical" href="https://krisxf.github.io/archives/2022/page/3/">
+<link rel="canonical" href="https://krisxf.github.io/2022/07/19/Element/">
 
 
 <script id="page-configurations">
@@ -38,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 阁</title>
+  <title>Element | 阁</title>
   
 
 
@@ -187,188 +192,118 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 27 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2022/07/19/Element/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Element
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-19 10:15:13" itemprop="dateCreated datePublished" datetime="2022-07-19T10:15:13+08:00">2022-07-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Element/" itemprop="url" rel="index"><span itemprop="name">Element</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2022</h1>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>一套基于Vue 的网站组件库 用于快速构建网页</p>
+<p><a target="_blank" rel="noopener" href="https://element.eleme.cn/#/zh-CNListener">官网</a></p>
+<span id="more"></span>
+
+<h1 id="Element-快速入门"><a href="#Element-快速入门" class="headerlink" title="Element 快速入门"></a>Element 快速入门</h1><ul>
+<li>引入Element的css js 文件 和Vue.js<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span> = <span class="string">&quot;vue.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span> = <span class="string">&quot;element-ui/lib/index.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;element-ui/lib/theme-chalk/index.css&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>创建Vue核心对象<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">el</span>:<span class="string">&quot;#app&quot;</span></span></span><br><span class="line"><span class="language-javascript">&#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>官网复制Element组件代码<h1 id="Element-布局"><a href="#Element-布局" class="headerlink" title="Element 布局"></a>Element 布局</h1></li>
+<li>Element 中有两种布局方式<ul>
+<li><p>Layout布局 通过基础的24分栏 迅速简便的创建布局<br><img src="/2022/07/19/Element/Layout%E5%B8%83%E5%B1%80.png" alt="Layout布局"></p>
+</li>
+<li><p>Container 布局容器 用于布局的容器组件 方便快速的搭建页面的基本结构</p>
+<p><img src="/2022/07/19/Element/Container%E5%B8%83%E5%B1%80.png" alt="Container布局"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Element-组件"><a href="#Element-组件" class="headerlink" title="Element 组件"></a>Element 组件</h1>
     </div>
 
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
+    
+    
+    
+        
 
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-04-15T19:59:40+08:00"
-              content="2022-04-15">
-          04-15
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2022/07/19/Element/" title="Element">https://krisxf.github.io/2022/07/19/Element/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/04/15/java%E4%B8%AD%E7%9A%84ArrayList/" itemprop="url">
-            
-              <span itemprop="name">java中的ArrayList</span>
-            
-          </a>
-      </h2>
+      <footer class="post-footer">
 
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-04-02T15:52:06+08:00"
-              content="2022-04-02">
-          04-02
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/04/02/sql%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E4%BB%A5%E5%8F%8A%E6%B5%81%E7%A8%8B/" itemprop="url">
-            
-              <span itemprop="name">sql语句的执行顺序以及流程</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-04-01T20:44:37+08:00"
-              content="2022-04-01">
-          04-01
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/04/01/Morris-%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/" itemprop="url">
-            
-              <span itemprop="name">Morris 中序遍历 -- 树</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-03-30T19:56:33+08:00"
-              content="2022-03-30">
-          03-30
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/03/30/%E6%B5%85%E6%9E%90hexo%E7%9A%84%E5%8E%9F%E7%90%86/" itemprop="url">
-            
-              <span itemprop="name">浅析hexo的原理</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-03-19T13:25:03+08:00"
-              content="2022-03-19">
-          03-19
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/03/19/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" itemprop="url">
-            
-              <span itemprop="name">正则表达式</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-03-08T09:13:40+08:00"
-              content="2022-03-08">
-          03-08
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/03/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87blog/" itemprop="url">
-            
-              <span itemprop="name">动态规划</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-03-08T09:07:51+08:00"
-              content="2022-03-08">
-          03-08
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/03/08/hello-world/" itemprop="url">
-            
-              <span itemprop="name">Hello World</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
+        
 
 
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/18/Vue/" rel="prev" title="Vue">
+      <i class="fa fa-chevron-left"></i> Vue
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2022/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2022/">1</a><a class="page-number" href="/archives/2022/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
 
 
 
@@ -419,6 +354,7 @@
       </ul>
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Element-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">Element 快速入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Element-%E5%B8%83%E5%B1%80"><span class="nav-number">3.</span> <span class="nav-text">Element 布局</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Element-%E7%BB%84%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">Element 组件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
