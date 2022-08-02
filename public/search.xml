@@ -18,6 +18,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -36,6 +42,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
       
     </entry>
     
@@ -94,6 +106,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> XML </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -108,10 +128,16 @@
       
       <categories>
           
-          <category> Filter </category>
+          <category> WebService </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
       
     </entry>
     
@@ -127,7 +153,7 @@
       
       <categories>
           
-          <category> 会话跟踪 </category>
+          <category> WebService </category>
           
       </categories>
       
@@ -146,14 +172,14 @@
       
       <categories>
           
-          <category> Servlet </category>
+          <category> WebService </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -171,14 +197,14 @@
       
       <categories>
           
-          <category> Servlet </category>
+          <category> WebService </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -196,14 +222,14 @@
       
       <categories>
           
-          <category> Web服务器 </category>
+          <category> WebService </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -301,6 +327,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -319,6 +353,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> Maven </tag>
+            
+        </tags>
       
     </entry>
     
@@ -341,9 +381,9 @@
       
         <tags>
             
-            <tag> SQL </tag>
+            <tag> Java </tag>
             
-            <tag> JAVA </tag>
+            <tag> MySQL </tag>
             
         </tags>
       
@@ -368,7 +408,7 @@
       
         <tags>
             
-            <tag> SQL </tag>
+            <tag> MySQL </tag>
             
         </tags>
       
@@ -393,7 +433,7 @@
       
         <tags>
             
-            <tag> SQL </tag>
+            <tag> MySQL </tag>
             
         </tags>
       
@@ -418,7 +458,7 @@
       
         <tags>
             
-            <tag> SQL </tag>
+            <tag> MySQL </tag>
             
         </tags>
       
@@ -436,14 +476,14 @@
       
       <categories>
           
-          <category> JAVA </category>
+          <category> Java </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -461,14 +501,14 @@
       
       <categories>
           
-          <category> JAVA </category>
+          <category> Java </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -486,14 +526,14 @@
       
       <categories>
           
-          <category> JAVA </category>
+          <category> Java </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -511,14 +551,14 @@
       
       <categories>
           
-          <category> JAVA </category>
+          <category> Java </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> Java </tag>
             
         </tags>
       
@@ -531,7 +571,7 @@
       <link href="/2022/04/02/sql%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E4%BB%A5%E5%8F%8A%E6%B5%81%E7%A8%8B/"/>
       <url>/2022/04/02/sql%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E4%BB%A5%E5%8F%8A%E6%B5%81%E7%A8%8B/</url>
       
-        <content type="html"><![CDATA[<h1 id="sql语句的执行顺序以及流程"><a href="#sql语句的执行顺序以及流程" class="headerlink" title="sql语句的执行顺序以及流程"></a>sql语句的执行顺序以及流程</h1><blockquote><p>程序员对sql语句的执行顺序的透彻掌握，是避免编程中各种bug和错误，歧义语句的不二法则。</p></blockquote><span id="more"></span><h1 id="SQL-Select-语句完整的执行顺序："><a href="#SQL-Select-语句完整的执行顺序：" class="headerlink" title="SQL Select 语句完整的执行顺序："></a>SQL Select 语句完整的执行顺序：</h1><p>1、from 子句组装来自不同数据源的数据；<br><br>2、where 子句基于指定的条件对记录行进行筛选； <br><br>3、group by 子句将数据划分为多个分组； <br><br>4、使用聚集函数进行计算； <br><br>5、使用 having 子句筛选分组；<br><br>6、计算所有的表达式；<br>7、select 的字段；<br><br>8、使用 order by 对结果集进行排序。<br></p><p>SQL 语言不同于其他编程语言的最明显特征是处理代码的顺序。 在大多数据库语言中，代码按编码顺序被处理。但在 SQL 语句中，第一个被处理的子句式 FROM，而不是第一出现的 SELECT。</p><h1 id="SQL-查询处理的步骤序号："><a href="#SQL-查询处理的步骤序号：" class="headerlink" title="SQL 查询处理的步骤序号："></a>SQL 查询处理的步骤序号：</h1><p>(1) FROM <left_table> <br><br>(2) <join_type> JOIN <right_table> <br><br>(3) ON <join_condition> <br><br>(4) WHERE <where_condition> <br><br>(5) GROUP BY <group_by_list><br><br>(6) WITH {CUBE | ROLLUP} <br><br>(7) HAVING <having_condition> <br><br>(8) SELECT (9) DISTINCT <br><br>(9) ORDER BY <order_by_list> <br><br>(10) <TOP_specification> <select_list><br></select_list></TOP_specification></order_by_list></having_condition></group_by_list></where_condition></join_condition></right_table></join_type></left_table></p><p>以上每个步骤都会产生一个虚拟表，该虚拟表被用作下一个步骤的输入。这些虚拟表对调用者(客户端应 用程序或者外部查询)不可用。只有最后一步生成的表才会会给调用者。如果没有在查询中指定某一个子句， 将跳过相应的步骤。</p><h1 id="逻辑查询处理阶段简介："><a href="#逻辑查询处理阶段简介：" class="headerlink" title="逻辑查询处理阶段简介："></a>逻辑查询处理阶段简介：</h1><p>1、 FROM：对 FROM 子句中的前两个表执行笛卡尔积(交叉联接)，生成虚拟表 VT1。</p><p>2、 ON：对 VT1 应用 ON 筛选器，只有那些使为真才被插入到 TV2。 </p><p>3、 OUTER (JOIN):如果指定了 OUTER JOIN(相对于 CROSS JOIN 或 INNER JOIN)，保留表中未找到 匹配的行将作为外部行添加到 VT2，生成 TV3。如果 FROM 子句包含两个以上的表，则对上一个联接生成的 结果表和下一个表重复执行步骤 1 到步骤 3，直到处理完所有的表位置。</p><p>4、 WHERE：对 TV3 应用 WHERE 筛选器，只有使为 true 的行才插入 TV4。 </p><p>5、 GROUP BY：按 GROUP BY 子句中的列列表对 TV4 中的行进行分组，生成 TV5。 </p><p>6、 CUTE|ROLLUP：把超组插入 VT5，生成 VT6。 </p><p>7、 HAVING：对 VT6 应用 HAVING 筛选器，只有使为 true 的组插入到 VT7。 </p><p>8、 SELECT：处理 SELECT 列表，产生 VT8。 </p><p>9、 DISTINCT：将重复的行从 VT8 中删除，产品 VT9。</p><p>10、 ORDER BY：将 VT9 中的行按 ORDER BY 子句中的列列表顺序，生成一个游标(VC10)。 </p><p>11、 TOP：从 VC10 的开始处选择指定数量或比例的行，生成表 TV11，并返回给调用者。 where 子句中的条件书写顺序</p><h1 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h1><p><a href="https://cloud.tencent.com/developer/article/1600323">小马哥</a></p><p>侵权联系删除 email：<a href="mailto:&#x32;&#54;&#54;&#56;&#51;&#56;&#48;&#48;&#x36;&#x34;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;">&#x32;&#54;&#54;&#56;&#51;&#56;&#48;&#48;&#x36;&#x34;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;</a></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="sql语句的执行顺序以及流程"><a href="#sql语句的执行顺序以及流程" class="headerlink" title="sql语句的执行顺序以及流程"></a>sql语句的执行顺序以及流程</h1><blockquote><p>程序员对sql语句的执行顺序的透彻掌握，是避免编程中各种bug和错误，歧义语句的不二法则。</p></blockquote><span id="more"></span><h1 id="SQL-Select-语句完整的执行顺序："><a href="#SQL-Select-语句完整的执行顺序：" class="headerlink" title="SQL Select 语句完整的执行顺序："></a>SQL Select 语句完整的执行顺序：</h1><p>1、from 子句组装来自不同数据源的数据；<br><br>2、where 子句基于指定的条件对记录行进行筛选； <br><br>3、group by 子句将数据划分为多个分组； <br><br>4、使用聚集函数进行计算； <br><br>5、使用 having 子句筛选分组；<br><br>6、计算所有的表达式；<br>7、select 的字段；<br><br>8、使用 order by 对结果集进行排序。<br></p><p>SQL 语言不同于其他编程语言的最明显特征是处理代码的顺序。 在大多数据库语言中，代码按编码顺序被处理。但在 SQL 语句中，第一个被处理的子句式 FROM，而不是第一出现的 SELECT。</p><h1 id="SQL-查询处理的步骤序号："><a href="#SQL-查询处理的步骤序号：" class="headerlink" title="SQL 查询处理的步骤序号："></a>SQL 查询处理的步骤序号：</h1><p>(1) FROM <left_table> <br><br>(2) <join_type> JOIN <right_table> <br><br>(3) ON <join_condition> <br><br>(4) WHERE <where_condition> <br><br>(5) GROUP BY <group_by_list><br><br>(6) WITH {CUBE | ROLLUP} <br><br>(7) HAVING <having_condition> <br><br>(8) SELECT (9) DISTINCT <br><br>(9) ORDER BY <order_by_list> <br><br>(10) <TOP_specification> <select_list><br></select_list></TOP_specification></order_by_list></having_condition></group_by_list></where_condition></join_condition></right_table></join_type></left_table></p><p>以上每个步骤都会产生一个虚拟表，该虚拟表被用作下一个步骤的输入。这些虚拟表对调用者(客户端应 用程序或者外部查询)不可用。只有最后一步生成的表才会会给调用者。如果没有在查询中指定某一个子句， 将跳过相应的步骤。</p><h1 id="逻辑查询处理阶段简介："><a href="#逻辑查询处理阶段简介：" class="headerlink" title="逻辑查询处理阶段简介："></a>逻辑查询处理阶段简介：</h1><p>1、 FROM：对 FROM 子句中的前两个表执行笛卡尔积(交叉联接)，生成虚拟表 VT1。</p><p>2、 ON：对 VT1 应用 ON 筛选器，只有那些使为真才被插入到 TV2。 </p><p>3、 OUTER (JOIN):如果指定了 OUTER JOIN(相对于 CROSS JOIN 或 INNER JOIN)，保留表中未找到 匹配的行将作为外部行添加到 VT2，生成 TV3。如果 FROM 子句包含两个以上的表，则对上一个联接生成的 结果表和下一个表重复执行步骤 1 到步骤 3，直到处理完所有的表位置。</p><p>4、 WHERE：对 TV3 应用 WHERE 筛选器，只有使为 true 的行才插入 TV4。 </p><p>5、 GROUP BY：按 GROUP BY 子句中的列列表对 TV4 中的行进行分组，生成 TV5。 </p><p>6、 CUTE|ROLLUP：把超组插入 VT5，生成 VT6。 </p><p>7、 HAVING：对 VT6 应用 HAVING 筛选器，只有使为 true 的组插入到 VT7。 </p><p>8、 SELECT：处理 SELECT 列表，产生 VT8。 </p><p>9、 DISTINCT：将重复的行从 VT8 中删除，产品 VT9。</p><p>10、 ORDER BY：将 VT9 中的行按 ORDER BY 子句中的列列表顺序，生成一个游标(VC10)。 </p><p>11、 TOP：从 VC10 的开始处选择指定数量或比例的行，生成表 TV11，并返回给调用者。 where 子句中的条件书写顺序</p><h1 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h1><p><a href="https://cloud.tencent.com/developer/article/1600323">小马哥</a></p><p>侵权联系删除 email：<a href="mailto:&#x32;&#54;&#x36;&#x38;&#51;&#56;&#48;&#48;&#x36;&#52;&#x40;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;">&#x32;&#54;&#x36;&#x38;&#51;&#56;&#48;&#48;&#x36;&#52;&#x40;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;</a></p>]]></content>
       
       
       <categories>
@@ -543,7 +583,7 @@
       
         <tags>
             
-            <tag> SQL </tag>
+            <tag> MySQL </tag>
             
         </tags>
       
@@ -552,7 +592,7 @@
     
     
     <entry>
-      <title>Morris 中序遍历 -- 树</title>
+      <title>Morris 中序遍历</title>
       <link href="/2022/04/01/Morris-%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/"/>
       <url>/2022/04/01/Morris-%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
       
@@ -561,14 +601,14 @@
       
       <categories>
           
-          <category> 算法 </category>
+          <category> 数据结构和算法 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 算法 </tag>
+            <tag> Tree </tag>
             
         </tags>
       
@@ -586,16 +626,10 @@
       
       <categories>
           
-          <category> 杂类 </category>
+          <category> Other </category>
           
       </categories>
       
-      
-        <tags>
-            
-            <tag> 杂类 </tag>
-            
-        </tags>
       
     </entry>
     
@@ -611,41 +645,10 @@
       
       <categories>
           
-          <category> 杂类 </category>
+          <category> 正则表达式 </category>
           
       </categories>
       
-      
-        <tags>
-            
-            <tag> 杂类 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>动态规划</title>
-      <link href="/2022/03/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87blog/"/>
-      <url>/2022/03/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87blog/</url>
-      
-        <content type="html"><![CDATA[<h2 id="动态算法的核心"><a href="#动态算法的核心" class="headerlink" title="动态算法的核心"></a>动态算法的核心</h2><p><strong>Those who cannot remember the past are condemn to repeat it.</strong></p><span id="more"></span><hr><h2 id="动态规划算法的两种形式"><a href="#动态规划算法的两种形式" class="headerlink" title="动态规划算法的两种形式"></a>动态规划算法的两种形式</h2><h5 id="一-自顶向下的备忘录法"><a href="#一-自顶向下的备忘录法" class="headerlink" title="一  自顶向下的备忘录法"></a>一  自顶向下的备忘录法</h5><pre><code>由给定的数据开始，将获得既定数据之间的数据进行存储备份</code></pre><p><strong>以斐波拉数列为例</strong></p><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">Fibonacci</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span>(n&lt;=<span class="number">0</span>)</span><br><span class="line"><span class="keyword">return</span> n;</span><br><span class="line"><span class="keyword">int</span> []Memo=<span class="keyword">new</span> <span class="keyword">int</span>[n+<span class="number">1</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)</span><br><span class="line">Memo[i]=<span class="number">-1</span>;</span><br><span class="line"><span class="function"><span class="keyword">return</span> <span class="title">fib</span><span class="params">(n, Memo)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> []Memo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(Memo[n]!=<span class="number">-1</span>)</span><br><span class="line"><span class="keyword">return</span> Memo[n];</span><br><span class="line"><span class="comment">//如果已经求出了fib（n）的值直接返回，否则将求出的值保存在Memo备忘录中。</span></span><br><span class="line"><span class="keyword">if</span>(n&lt;=<span class="number">2</span>)</span><br><span class="line">Memo[n]=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span> Memo[n]=fib( n<span class="number">-1</span>,Memo)+fib(n<span class="number">-2</span>,Memo);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> Memo[n];</span><br><span class="line">&#125;<span class="string">&quot;</span></span><br></pre></td></tr></table></figure><h5 id="二-自底向上的动态规划"><a href="#二-自底向上的动态规划" class="headerlink" title="二  自底向上的动态规划"></a>二  自底向上的动态规划</h5><pre><code> 先计算子问题，在计算父问题，由根至峰</code></pre><p><strong>同样以斐波拉数列为例</strong></p><pre><code>自底向上方法也是利用数组保存了先计算的值，为后面的调用服务。观察参与循环的只有 i，i-1 , i-2三项，因此该方法的空间可以进一步的压缩如下</code></pre><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static int fib(int n)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(n&lt;=1)</span><br><span class="line">return n;</span><br><span class="line"></span><br><span class="line">int <span class="attribute">Memo_i_2</span>=0;</span><br><span class="line">int <span class="attribute">Memo_i_1</span>=1;</span><br><span class="line">int <span class="attribute">Memo_i</span>=1;</span><br><span class="line"><span class="keyword">for</span>(int <span class="attribute">i</span>=2;i&lt;=n;i++)</span><br><span class="line">&#123;</span><br><span class="line"><span class="attribute">Memo_i</span>=Memo_i_2+Memo_i_1;</span><br><span class="line"><span class="attribute">Memo_i_2</span>=Memo_i_1;</span><br><span class="line"><span class="attribute">Memo_i_1</span>=Memo_i;</span><br><span class="line">&#125;</span><br><span class="line">return Memo_i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><hr><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://blog.csdn.net/u013309870/article/details/75193592">CSDN-算法-动态规划</a></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 算法 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 算法 </tag>
-            
-        </tags>
       
     </entry>
     
@@ -659,12 +662,12 @@
         <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><span id="more"></span><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
       
       
+      <categories>
+          
+          <category> Other </category>
+          
+      </categories>
       
-        <tags>
-            
-            <tag> 杂类 </tag>
-            
-        </tags>
       
     </entry>
     
