@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"krisxf.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
+
+  <meta name="description" content="TreeMap 简介 本篇使用的jdk源码版本jdk11  官方介绍(节取) :A Red-Black tree based NavigableMap implementation. The map is sorted according to the natural ordering of its keys, or by a Comparator provided at map creation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TreeMap源码分析">
+<meta property="og:url" content="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="阁">
+<meta property="og:description" content="TreeMap 简介 本篇使用的jdk源码版本jdk11  官方介绍(节取) :A Red-Black tree based NavigableMap implementation. The map is sorted according to the natural ordering of its keys, or by a Comparator provided at map creation">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/TreeMap.png">
+<meta property="article:published_time" content="2023-10-23T07:30:32.000Z">
+<meta property="article:modified_time" content="2023-10-24T13:28:04.218Z">
+<meta property="article:author" content="Kris">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="TreeMap">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/TreeMap.png">
+
+<link rel="canonical" href="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>TreeMap源码分析 | 阁</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阁</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">28</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">27</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">131</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/03.jpg">
+      <meta itemprop="name" content="Kris">
+      <meta itemprop="description" content="Find something useful for you.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阁">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TreeMap源码分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-10-23 15:30:32" itemprop="dateCreated datePublished" datetime="2023-10-23T15:30:32+08:00">2023-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">源码分析</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="TreeMap-简介"><a href="#TreeMap-简介" class="headerlink" title="TreeMap 简介"></a>TreeMap 简介</h1><blockquote>
+<p>本篇使用的jdk源码版本jdk11</p>
+</blockquote>
+<p><strong>官方介绍(节取)</strong> :<br><em>A Red-Black tree based NavigableMap implementation. The map is sorted according to the natural ordering of its keys, or by a Comparator provided at map creation time, depending on which constructor is used.<br>This implementation provides guaranteed log(n) time cost for the containsKey, get, put and remove operations.<br>Note that this implementation is not synchronized, the map should be “wrapped” using the Collections.synchronizedSortedMap method.</em></p>
+<blockquote>
+<p><code>TreeMap</code> 是基于红黑树的 <code>NavigableMap</code> 实现。映射根据其键的自然顺序进行排序，或者由映射创建时提供的比较器进行排序，具体取决于所使用的构造函数。<br>此实现为 containsKey、get、put 和 remove 操作提供有保证的 log（n） 时间成本。<br>该类不是线程安全的,在并发环境下使用应该使用<code>Collections.synchronizedSortedMap</code> 方法包装<br><strong>不可加入NULL值</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<p><img src="/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/TreeMap.png" alt="TreeMap"></p>
+<p><code>TreeMap</code> 继承了 <code>NavigableMap</code>、 <code>Cloneable</code>、<code>Serializable</code> 、<code>AbstractMap</code>等接口</p>
+<ul>
+<li><code>NavigableMap</code> ：<code>TreeMap</code> 实现了 <code>NavigableMap</code> 接口，它是 <code>Map</code> 接口的扩展，提供了导航映射的功能。<code>NavigableMap</code> 接口定义了一系列用于获取最小键、最大键、小于或大于给定键的子映射等方法。</li>
+<li><code>Cloneable</code> : 也是一个标记接口，表明它具有拷贝能力，可以进行深拷贝和浅拷贝</li>
+<li><code>Serializable</code> : 也是一个标记接口，表明它可以进行序列化操作，也就是可以将对象转化为字节流进行持久化存储或者在网络中传输，非常方便</li>
+<li><code>AbstractMap</code> : <code>TreeMap</code> 继承了 <code>AbstractMap</code> 抽象类。<code>AbstractMap</code> 实现了 <code>Map</code> 接口的大部分方法，但留下了一些方法需要具体的 <code>Map</code> 实现类来实现。<code>TreeMap</code> 通过继承 <code>AbstractMap</code> 来获得 <code>Map</code></li>
+</ul>
+<h1 id="TreeMap-的成员变量"><a href="#TreeMap-的成员变量" class="headerlink" title="TreeMap 的成员变量"></a>TreeMap 的成员变量</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 用于维护此树状图中的顺序的比较器，如果它使用其键的自然顺序，则为 null。 </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Comparator&lt;? <span class="built_in">super</span> K&gt; comparator;  </span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 红黑树的根节点</span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Entry&lt;K,V&gt; root;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 树中的 entry 个数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 对树的结构修改次数。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="type">int</span> <span class="variable">modCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="TreeMap-的构造方法"><a href="#TreeMap-的构造方法" class="headerlink" title="TreeMap 的构造方法"></a>TreeMap 的构造方法</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 使用其键的自然顺序构造一个新的空Tree Map。</span></span><br><span class="line"><span class="comment"> * 插入到映射中的所有键都必须实现可比较接口。</span></span><br><span class="line"><span class="comment"> * 所有这些键必须是相互可比的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">TreeMap</span><span class="params">()</span> &#123;  </span><br><span class="line">    comparator = <span class="literal">null</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 构造一个新的空树形图,根据给定的比较器进行排序。</span></span><br><span class="line"><span class="comment"> * 插入到映射中的所有键必须由给定的比较器相互比较</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">TreeMap</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> K&gt; comparator)</span> &#123;  </span><br><span class="line">    <span class="built_in">this</span>.comparator = comparator;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 构造一个新的树形图，将给定的map中的元素全都放入其中，根据其键的自然顺序进行排序。</span></span><br><span class="line"><span class="comment"> * 插入到新映射中的所有键都必须实现可比较接口。</span></span><br><span class="line"><span class="comment"> * 所有这些键必须是相互可比的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">TreeMap</span><span class="params">(Map&lt;? extends K, ? extends V&gt; m)</span> &#123;  </span><br><span class="line">    comparator = <span class="literal">null</span>;  </span><br><span class="line">    putAll(m);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 构造一个新的树状图，将给定的有序map中的元素全都放入其中，并使用与该有序Map相同的排序规则。</span></span><br><span class="line"><span class="comment"> * 此方法以线性时间运行</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">TreeMap</span><span class="params">(SortedMap&lt;K, ? extends V&gt; m)</span> &#123;  </span><br><span class="line">    comparator = m.comparator();  </span><br><span class="line">    <span class="keyword">try</span> &#123;  </span><br><span class="line">        buildFromSorted(m.size(), m.entrySet().iterator(), <span class="literal">null</span>, <span class="literal">null</span>);  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (java.io.IOException | ClassNotFoundException cannotHappen) &#123;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 从排序数据构建线性时间树算法。可以接受来自迭代器或流的键和或值</span></span><br><span class="line"><span class="comment"> * - defaultVal  如果非 null，则此默认值用于映射中的每个值。如果为 null，则从迭代器或流读取每个值，如上所述。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">buildFromSorted</span><span class="params">(<span class="type">int</span> size, Iterator&lt;?&gt; it,  </span></span><br><span class="line"><span class="params">                             java.io.ObjectInputStream str,  </span></span><br><span class="line"><span class="params">                             V defaultVal)</span>  </span><br><span class="line">    <span class="keyword">throws</span>  java.io.IOException, ClassNotFoundException &#123;  </span><br><span class="line">    <span class="built_in">this</span>.size = size;  </span><br><span class="line">    root = buildFromSorted(<span class="number">0</span>, <span class="number">0</span>, size-<span class="number">1</span>, computeRedLevel(size),  </span><br><span class="line">                           it, str, defaultVal);  </span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 真正实现算法的方法，它执行先前方法的实际工作</span></span><br><span class="line"><span class="comment"> * redLevel 表示在非满的底层节点中应标记为红色的节点的层级.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span>  </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">buildFromSorted</span><span class="params">(<span class="type">int</span> level, <span class="type">int</span> lo, <span class="type">int</span> hi,  </span></span><br><span class="line"><span class="params">                                         <span class="type">int</span> redLevel,  </span></span><br><span class="line"><span class="params">                                         Iterator&lt;?&gt; it,  </span></span><br><span class="line"><span class="params">                                         java.io.ObjectInputStream str,  </span></span><br><span class="line"><span class="params">                                         V defaultVal)</span>  </span><br><span class="line">    <span class="keyword">throws</span>  java.io.IOException, ClassNotFoundException &#123;  </span><br><span class="line">    <span class="comment">/*  </span></span><br><span class="line"><span class="comment">     *根是最中间的元素。为了达到它，我们必须首先递归构造整个左子树，以便获取它的所有元素。</span></span><br><span class="line"><span class="comment">     * 然后我们可以继续右子树。</span></span><br><span class="line"><span class="comment">     * lo 和 hi 参数是从当前子树的迭代器或流中提取的最小和最大索引。</span></span><br><span class="line"><span class="comment">     * 它们实际上并没有被索引，我们只是按顺序进行，确保按相应的顺序提取项目。     </span></span><br><span class="line"><span class="comment">     */</span>  </span><br><span class="line">    <span class="keyword">if</span> (hi &lt; lo) <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">	<span class="comment">// 如符号右移,保证了 mid 始终是个正值</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (lo + hi) &gt;&gt;&gt; <span class="number">1</span>;  </span><br><span class="line">  </span><br><span class="line">    Entry&lt;K,V&gt; left  = <span class="literal">null</span>;  </span><br><span class="line">    <span class="comment">// 如果左子树的键范围有效,则递归的构建左子树</span></span><br><span class="line">    <span class="keyword">if</span> (lo &lt; mid)  </span><br><span class="line">        left = buildFromSorted(level+<span class="number">1</span>, lo, mid - <span class="number">1</span>, redLevel,  </span><br><span class="line">                               it, str, defaultVal);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 从迭代器或者stream中获取键和值</span></span><br><span class="line">    K key;  </span><br><span class="line">    V value;  </span><br><span class="line">    <span class="comment">// 如果迭代器不为空</span></span><br><span class="line">    <span class="keyword">if</span> (it != <span class="literal">null</span>) &#123;  </span><br><span class="line">	    <span class="comment">// 如果默认值为空,表示从迭代器或者流中读取元素</span></span><br><span class="line">        <span class="keyword">if</span> (defaultVal==<span class="literal">null</span>) &#123;  </span><br><span class="line">	        <span class="comment">// 获取entry 和 键值</span></span><br><span class="line">            Map.Entry&lt;?,?&gt; entry = (Map.Entry&lt;?,?&gt;)it.next();  </span><br><span class="line">            key = (K)entry.getKey();  </span><br><span class="line">            value = (V)entry.getValue();  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        <span class="comment">// 如果默认值不为空,获取键,值设置为默认值</span></span><br><span class="line">            key = (K)it.next();  </span><br><span class="line">            value = defaultVal;  </span><br><span class="line">        &#125;    </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    <span class="comment">// 迭代器为空,从流中获取键和值</span></span><br><span class="line">        key = (K) str.readObject();  </span><br><span class="line">        value = (defaultVal != <span class="literal">null</span> ? defaultVal : (V) str.readObject());  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 构建Entry节点</span></span><br><span class="line">    Entry&lt;K,V&gt; middle =  <span class="keyword">new</span> <span class="title class_">Entry</span>&lt;&gt;(key, value, <span class="literal">null</span>);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 如果当前层级为 redLevel ,将节点染成红色</span></span><br><span class="line">    <span class="keyword">if</span> (level == redLevel)  </span><br><span class="line">        middle.color = RED;  </span><br><span class="line">	<span class="comment">// 左子树不为空,将 middle 与左子树连接，同时设置左子树的父节点为 middle。</span></span><br><span class="line">    <span class="keyword">if</span> (left != <span class="literal">null</span>) &#123;  </span><br><span class="line">        middle.left = left;  </span><br><span class="line">        left.parent = middle;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//递归构建右子树</span></span><br><span class="line">    <span class="keyword">if</span> (mid &lt; hi) &#123;  </span><br><span class="line">        Entry&lt;K,V&gt; right = buildFromSorted(level+<span class="number">1</span>, mid+<span class="number">1</span>, hi, redLevel,  </span><br><span class="line">                                           it, str, defaultVal);  </span><br><span class="line">        middle.right = right;  </span><br><span class="line">        right.parent = middle;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> middle;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="TreeMap的核心方法"><a href="#TreeMap的核心方法" class="headerlink" title="TreeMap的核心方法"></a>TreeMap的核心方法</h1><h2 id="Put"><a href="#Put" class="headerlink" title="Put"></a>Put</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 往map中插入键值，如果键值存在会覆盖该值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> V <span class="title function_">put</span><span class="params">(K key, V value)</span> &#123;  </span><br><span class="line">	<span class="comment">// 创建根节点的副本</span></span><br><span class="line">    Entry&lt;K,V&gt; t = root;  </span><br><span class="line">    <span class="comment">// 如果根节点为null</span></span><br><span class="line">    <span class="keyword">if</span> (t == <span class="literal">null</span>) &#123;  </span><br><span class="line">	    <span class="comment">// 类型(可能为null)检查</span></span><br><span class="line">        compare(key, key); </span><br><span class="line">		<span class="comment">// 创建节点</span></span><br><span class="line">        root = <span class="keyword">new</span> <span class="title class_">Entry</span>&lt;&gt;(key, value, <span class="literal">null</span>);  </span><br><span class="line">        <span class="comment">// 设置大小</span></span><br><span class="line">        size = <span class="number">1</span>;  </span><br><span class="line">        modCount++;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">    &#125; </span><br><span class="line">	<span class="comment">// 不为null</span></span><br><span class="line">    <span class="type">int</span> cmp;  </span><br><span class="line">    Entry&lt;K,V&gt; parent;  </span><br><span class="line">    <span class="comment">// 分离比较器和比较路径</span></span><br><span class="line">    Comparator&lt;? <span class="built_in">super</span> K&gt; cpr = comparator; </span><br><span class="line">    <span class="comment">// 如果比较器不为空，即指定了自己的排序规则，不按照自然顺序 </span></span><br><span class="line">    <span class="keyword">if</span> (cpr != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">do</span> &#123;  </span><br><span class="line">	        <span class="comment">// 与节点的key进行比较</span></span><br><span class="line">            parent = t;  </span><br><span class="line">            cmp = cpr.compare(key, t.key);  </span><br><span class="line">            <span class="comment">//根据比较结果往左或往右遍历</span></span><br><span class="line">            <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)  </span><br><span class="line">                t = t.left;  </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)  </span><br><span class="line">                t = t.right;  </span><br><span class="line">            <span class="keyword">else</span>  </span><br><span class="line">	            <span class="comment">//相等则覆盖</span></span><br><span class="line">                <span class="keyword">return</span> t.setValue(value);  </span><br><span class="line">        &#125; <span class="keyword">while</span> (t != <span class="literal">null</span>);  </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="comment">// 比较器为null</span></span><br><span class="line">    <span class="keyword">else</span> &#123;  </span><br><span class="line">        <span class="keyword">if</span> (key == <span class="literal">null</span>)  </span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();  </span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span> </span><br><span class="line">	        <span class="comment">// 使用的是键值类型自带的排序规则 </span></span><br><span class="line">            Comparable&lt;? <span class="built_in">super</span> K&gt; k = (Comparable&lt;? <span class="built_in">super</span> K&gt;) key;  </span><br><span class="line">        <span class="comment">// 找到可插入的位置</span></span><br><span class="line">        <span class="keyword">do</span> &#123;  </span><br><span class="line">            parent = t;  </span><br><span class="line">            cmp = k.compareTo(t.key);  </span><br><span class="line">            <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)  </span><br><span class="line">                t = t.left;  </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)  </span><br><span class="line">                t = t.right;  </span><br><span class="line">            <span class="keyword">else</span>  </span><br><span class="line">                <span class="keyword">return</span> t.setValue(value);  </span><br><span class="line">        &#125; <span class="keyword">while</span> (t != <span class="literal">null</span>);  </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="comment">// 构建节点</span></span><br><span class="line">    Entry&lt;K,V&gt; e = <span class="keyword">new</span> <span class="title class_">Entry</span>&lt;&gt;(key, value, parent);  </span><br><span class="line">    <span class="comment">// 根据比较结果进行复制</span></span><br><span class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)  </span><br><span class="line">        parent.left = e;  </span><br><span class="line">    <span class="keyword">else</span>  </span><br><span class="line">        parent.right = e;  </span><br><span class="line">    <span class="comment">// 对红黑树的结构进行调整</span></span><br><span class="line">    fixAfterInsertion(e);  </span><br><span class="line">    size++;  </span><br><span class="line">    modCount++;  </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 将指定map中的元素全部放入当前map</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">putAll</span><span class="params">(Map&lt;? extends K, ? extends V&gt; map)</span> &#123;  </span><br><span class="line">    <span class="type">int</span> <span class="variable">mapSize</span> <span class="operator">=</span> map.size();  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">if</span> (size==<span class="number">0</span> &amp;&amp; mapSize!=<span class="number">0</span> &amp;&amp; map <span class="keyword">instanceof</span> SortedMap) &#123;  </span><br><span class="line">        Comparator&lt;?&gt; c = ((SortedMap&lt;?,?&gt;)map).comparator();  </span><br><span class="line">        <span class="keyword">if</span> (c == comparator || (c != <span class="literal">null</span> &amp;&amp; c.equals(comparator))) &#123;  </span><br><span class="line">            ++modCount;  </span><br><span class="line">            <span class="keyword">try</span> &#123;  </span><br><span class="line">	            <span class="comment">// 如果是有序Map的话，直接执行buildFromSorted方法</span></span><br><span class="line">                buildFromSorted(mapSize, map.entrySet().iterator(),  </span><br><span class="line">                                <span class="literal">null</span>, <span class="literal">null</span>);  </span><br><span class="line">            &#125; <span class="keyword">catch</span> (java.io.IOException | ClassNotFoundException cannotHappen) &#123;  </span><br><span class="line">            &#125;            </span><br><span class="line">            <span class="keyword">return</span>;  </span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="comment">// 不然一个一个调用put方法放入键值对</span></span><br><span class="line">    <span class="built_in">super</span>.putAll(map);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 返回值，如果键存在的话，不然返回null</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> V <span class="title function_">get</span><span class="params">(Object key)</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = getEntry(key);  </span><br><span class="line">    <span class="keyword">return</span> (p==<span class="literal">null</span> ? <span class="literal">null</span> : p.value);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 返回键值对，或者null</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">getEntry</span><span class="params">(Object key)</span> &#123;  </span><br><span class="line">    <span class="comment">// 提供了比较器的get方法，主体代码差距不大  </span></span><br><span class="line">    <span class="keyword">if</span> (comparator != <span class="literal">null</span>)  </span><br><span class="line">	    <span class="comment">//使用的是</span></span><br><span class="line">	    <span class="comment">// Comparator&lt;? super K&gt; cpr = comparator;</span></span><br><span class="line">	    <span class="comment">// cpr.compare(k, p.key);</span></span><br><span class="line">        <span class="keyword">return</span> getEntryUsingComparator(key);  </span><br><span class="line">    <span class="keyword">if</span> (key == <span class="literal">null</span>)  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();  </span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span>  </span><br><span class="line">        Comparable&lt;? <span class="built_in">super</span> K&gt; k = (Comparable&lt;? <span class="built_in">super</span> K&gt;) key;  </span><br><span class="line">    Entry&lt;K,V&gt; p = root; </span><br><span class="line">    <span class="comment">// 从根节点开始查找， 需要实现compareTo方法</span></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> k.compareTo(p.key);  </span><br><span class="line">        <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)  </span><br><span class="line">            p = p.left;  </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)  </span><br><span class="line">            p = p.right;  </span><br><span class="line">        <span class="keyword">else</span>  </span><br><span class="line">            <span class="keyword">return</span> p;  </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 获取大于指定键的最小键值对  </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">getHigherEntry</span><span class="params">(K key)</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = root;  </span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;  </span><br><span class="line">	    <span class="comment">// 比较</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> compare(key, p.key);  </span><br><span class="line">        <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;  </span><br><span class="line">	        <span class="comment">// 往左查询</span></span><br><span class="line">            <span class="keyword">if</span> (p.left != <span class="literal">null</span>)  </span><br><span class="line">                p = p.left;  </span><br><span class="line">            <span class="keyword">else</span>  </span><br><span class="line">                <span class="keyword">return</span> p;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">	        <span class="comment">// 往右查询</span></span><br><span class="line"><span class="comment">//	                5</span></span><br><span class="line"><span class="comment">//			       / \</span></span><br><span class="line"><span class="comment">//			      3   8</span></span><br><span class="line"><span class="comment">//			     / \   \</span></span><br><span class="line"><span class="comment">//			    2   4   10</span></span><br><span class="line"><span class="comment">//			           /</span></span><br><span class="line"><span class="comment">//			          9</span></span><br><span class="line">			<span class="comment">//1. 首先，我们从根节点开始，节点值为 5，然后向左子树走，直到节点值为 4。此时，我们的当前节点 `p` 是节点值为 4。</span></span><br><span class="line">			<span class="comment">//2. 检查 `p` 的右子节点，发现它没有右子节点，因此不能直接移动到右子节点。这时我们需要进入 `while` 循环来查找后继节点。</span></span><br><span class="line">			<span class="comment">//3. 在循环内，首先我们将 `ch`（当前节点）设置为 `p`，然后将 `parent` 设置为 `p` 的父节点，即节点值为 3。现在，条件 `ch == parent.right` 成立，因为 `p` 是其父节点 `parent` 的右子节点。</span></span><br><span class="line">			<span class="comment">//4. 接下来，我们将 `ch` 移动到 `parent`，即将 `ch` 更新为节点值为 3 的节点。  </span></span><br><span class="line">			<span class="comment">//5. 再次检查条件 `ch == parent.right`，这次条件不成立，因为节点值为 3 的节点不是其父节点的右子节点。</span></span><br><span class="line">			<span class="comment">//6. 循环结束，我们找到了节点值为 4 的后继节点，即节点值为 5。</span></span><br><span class="line">            <span class="keyword">if</span> (p.right != <span class="literal">null</span>) &#123;  </span><br><span class="line">                p = p.right;  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                Entry&lt;K,V&gt; parent = p.parent;  </span><br><span class="line">                Entry&lt;K,V&gt; ch = p;  </span><br><span class="line">                <span class="keyword">while</span> (parent != <span class="literal">null</span> &amp;&amp; ch == parent.right) &#123;  </span><br><span class="line">                    ch = parent;  </span><br><span class="line">                    parent = parent.parent;  </span><br><span class="line">                &#125;                </span><br><span class="line">                <span class="keyword">return</span> parent;  </span><br><span class="line">            &#125;        </span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 找到比指定键小的最大键值对 过程与上面相反</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">getLowerEntry</span><span class="params">(K key)</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = root;  </span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> compare(key, p.key);  </span><br><span class="line">        <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;  </span><br><span class="line">            <span class="keyword">if</span> (p.right != <span class="literal">null</span>)  </span><br><span class="line">                p = p.right;  </span><br><span class="line">            <span class="keyword">else</span>  </span><br><span class="line">                <span class="keyword">return</span> p;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            <span class="keyword">if</span> (p.left != <span class="literal">null</span>) &#123;  </span><br><span class="line">                p = p.left;  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                Entry&lt;K,V&gt; parent = p.parent;  </span><br><span class="line">                Entry&lt;K,V&gt; ch = p;  </span><br><span class="line">                <span class="keyword">while</span> (parent != <span class="literal">null</span> &amp;&amp; ch == parent.left) &#123;  </span><br><span class="line">                    ch = parent;  </span><br><span class="line">                    parent = parent.parent;  </span><br><span class="line">                &#125;               </span><br><span class="line">                <span class="keyword">return</span> parent;  </span><br><span class="line">            &#125;        </span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 返回第一个键值对（根据 TreeMap 的键排序函数）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">getFirstEntry</span><span class="params">()</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = root;  </span><br><span class="line">	</span><br><span class="line">    <span class="keyword">if</span> (p != <span class="literal">null</span>)  </span><br><span class="line">        <span class="keyword">while</span> (p.left != <span class="literal">null</span>)  </span><br><span class="line">            p = p.left;  </span><br><span class="line">    <span class="keyword">return</span> p;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 返回最后一个键值对（根据 TreeMap 的键排序函数）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title function_">getLastEntry</span><span class="params">()</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = root;  </span><br><span class="line">    <span class="comment">// 一直往右走</span></span><br><span class="line">    <span class="keyword">if</span> (p != <span class="literal">null</span>)  </span><br><span class="line">        <span class="keyword">while</span> (p.right != <span class="literal">null</span>)  </span><br><span class="line">            p = p.right;  </span><br><span class="line">    <span class="keyword">return</span> p;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Remove"><a href="#Remove" class="headerlink" title="Remove"></a>Remove</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 从此 TreeMap 中删除该键（如果存在）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> V <span class="title function_">remove</span><span class="params">(Object key)</span> &#123;  </span><br><span class="line">    Entry&lt;K,V&gt; p = getEntry(key);  </span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">null</span>)  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">    <span class="type">V</span> <span class="variable">oldValue</span> <span class="operator">=</span> p.value;  </span><br><span class="line">    deleteEntry(p);  </span><br><span class="line">    <span class="keyword">return</span> oldValue;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment"> * 删除节点，并调整树</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">deleteEntry</span><span class="params">(Entry&lt;K,V&gt; p)</span> &#123;  </span><br><span class="line">    modCount++;  </span><br><span class="line">    size--;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//如果节点 p 既有左子节点又有右子节点，表示 p 是一个内部节点，需要执行一些特殊处理来删除它。</span></span><br><span class="line">    <span class="comment">//这个分支处理的情况是 p 有两个子节点。这时我们找到 p 的后继节点 s，将后继节点的键和值复制到 p，然后将 p 指向后继节点 s，最终的目标是删除 p 而不破坏树的性质。</span></span><br><span class="line">    <span class="keyword">if</span> (p.left != <span class="literal">null</span> &amp;&amp; p.right != <span class="literal">null</span>) &#123;  </span><br><span class="line">        Entry&lt;K,V&gt; s = successor(p);  </span><br><span class="line">        p.key = s.key;  </span><br><span class="line">        p.value = s.value;  </span><br><span class="line">        p = s;  </span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">      <span class="comment">//它是要用来替代被删除节点 p 的节点。如果 p 有左子节点，则 replacement 是左子节点；如果 p 没有左子节点，则 replacement 是右子节点。</span></span><br><span class="line">     Entry&lt;K,V&gt; replacement = (p.left != <span class="literal">null</span> ? p.left : p.right);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (replacement != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="comment">//确定了 replacement 后，需要重新连接 replacement 到它的父节点。如果 p 没有父节点，说明 p 是根节点，所以将 replacement 设为新的根节点 root。</span></span><br><span class="line">        replacement.parent = p.parent;  </span><br><span class="line">        <span class="keyword">if</span> (p.parent == <span class="literal">null</span>)  </span><br><span class="line">            root = replacement;  </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p == p.parent.left)  </span><br><span class="line">            p.parent.left  = replacement;  </span><br><span class="line">        <span class="keyword">else</span>  </span><br><span class="line">            p.parent.right = replacement;  </span><br><span class="line">   </span><br><span class="line">        p.left = p.right = p.parent = <span class="literal">null</span>;  </span><br><span class="line">  </span><br><span class="line">		<span class="comment">// 删除的节点为黑色需要调整树的结构      </span></span><br><span class="line">        <span class="keyword">if</span> (p.color == BLACK)  </span><br><span class="line">            fixAfterDeletion(replacement);  </span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p.parent == <span class="literal">null</span>) &#123;   </span><br><span class="line">		<span class="comment">// 删除的是根节点</span></span><br><span class="line">        root = <span class="literal">null</span>;  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">	    <span class="comment">// 删除黑色节点需要进行调整</span></span><br><span class="line">        <span class="keyword">if</span> (p.color == BLACK)  </span><br><span class="line">            fixAfterDeletion(p);  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> (p.parent != <span class="literal">null</span>) &#123;  </span><br><span class="line">            <span class="keyword">if</span> (p == p.parent.left)  </span><br><span class="line">                p.parent.left = <span class="literal">null</span>;  </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == p.parent.right)  </span><br><span class="line">                p.parent.right = <span class="literal">null</span>;  </span><br><span class="line">            p.parent = <span class="literal">null</span>;  </span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kris
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://krisxf.github.io/2023/10/23/TreeMap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="TreeMap源码分析">https://krisxf.github.io/2023/10/23/TreeMap源码分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/TreeMap/" rel="tag"># TreeMap</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/23/HashSet%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="prev" title="HashSet源码分析">
+      <i class="fa fa-chevron-left"></i> HashSet源码分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TreeMap-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">TreeMap 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TreeMap-%E7%9A%84%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">TreeMap 的成员变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TreeMap-%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">TreeMap 的构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TreeMap%E7%9A%84%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">TreeMap的核心方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Put"><span class="nav-number">4.1.</span> <span class="nav-text">Put</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Get"><span class="nav-number">5.</span> <span class="nav-text">Get</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Remove"><span class="nav-number">6.</span> <span class="nav-text">Remove</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kris"
+      src="/images/03.jpg">
+  <p class="site-author-name" itemprop="name">Kris</p>
+  <div class="site-description" itemprop="description">Find something useful for you.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/krisxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;krisxf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">kris</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='32,179,75' opacity='0.7' zIndex='-1' count='200' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/33.2017.tomo-bukatsu.high.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/sakura.js"></script>
